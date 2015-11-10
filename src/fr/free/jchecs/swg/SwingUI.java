@@ -72,7 +72,12 @@ import fr.free.jchecs.core.Player;
  * @author David Cotton
  */
 final class SwingUI implements MoveListener, UI {
-
+    
+    /*
+     * Variavel que informar se a classe ja foi fechada
+     */
+    private boolean isClosed;
+    
     /**
      * Clé de la propriété "cellsSize".
      */
@@ -965,20 +970,22 @@ final class SwingUI implements MoveListener, UI {
         final JFrame fenetre = getMainFrame();
         fenetre.setLocationRelativeTo(null);
         fenetre.setVisible(true);
-
-        while (true) {
+        isClosed = false;
+        while (!isClosed) {
             while (_game.getState() == IN_PROGRESS) {
+                System.out.println(".");
                 _lastMove = null;
 
                 final MoveGenerator plateau = _game.getBoard();
                 final Engine ia = _game.getPlayer(plateau.isWhiteActive()).getEngine();
 
-                final Interpreter a = new Interpreter((MailboxBoard) _game.getBoard(), plateau.isWhiteActive());
+//                final Interpreter a = new Interpreter((MailboxBoard) _game.getBoard(), plateau.isWhiteActive());
 
                 if (ia == null) {
                     _boardUI.setEnabled(true);
-                    _lastMove = a.loopTest();
-//                    waitForMove();
+//                    _lastMove = a.loopTest();
+                    waitForMove();
+                    System.out.println("wait");
                 } else {
                     _boardUI.setEnabled(false);
                     _lastMove = ia.getMoveFor(plateau);
@@ -1003,9 +1010,12 @@ final class SwingUI implements MoveListener, UI {
                             + "ms <=> " + (int) (1000.0 / etime * hmc) + " nodes/s");
                 }
 
-                System.out.print("");
-                _game.moveFromCurrent(_lastMove);
-                System.out.print("");
+                if (!isClosed) {
+                    _game.moveFromCurrent(_lastMove);
+                } else {
+                    
+                    break;
+                }
             }
             _boardUI.setEnabled(false);
             try {
@@ -1015,6 +1025,7 @@ final class SwingUI implements MoveListener, UI {
                 assert false;
             }
         }
+        System.out.println("saida");
     }
 
     /**
@@ -1024,8 +1035,9 @@ final class SwingUI implements MoveListener, UI {
      */
     public void stop() {
         saveProperties();
-
-        System.exit(0);
+        isClosed = true;
+//        _mainFrame.dispose();
+        notifyAll();
     }
 
     /**
@@ -1033,7 +1045,8 @@ final class SwingUI implements MoveListener, UI {
      */
     private synchronized void waitForMove() {
         try {
-            while (_lastMove == null) {
+            while ((_lastMove == null) && (!isClosed)) {
+                System.out.print("-");
                 wait();
             }
         } catch (final InterruptedException e) {
@@ -1080,6 +1093,11 @@ final class SwingUI implements MoveListener, UI {
      *  Metodos inseridos para adaptação do Tcc
      * ***************************************************************************
      */
+    
+    public boolean isClosed() {
+        return isClosed;
+    }
+    
     public synchronized boolean recebeMove(String move) {
 
         final MoveGenerator moveGen = _game.getBoard();

@@ -25,10 +25,12 @@ package fr.free.jchecs.swg;
  */
 public final class StartJChess {
 
+    private SwingUI ihm;
+
     /**
      * Classe utilitaire : ne pas instancier !
      */
-    private StartJChess() {
+    public StartJChess() {
         // Rien de spécifique...
     }
 
@@ -38,14 +40,25 @@ public final class StartJChess {
      * @param pArgs Arguments de la ligne de commande : ignorés, aucun argument
      * attendu.
      */
-    public UI main(final String[] pArgs) {
+    public void run() {
         final ExceptionHandler gestionErreur = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(gestionErreur);
-
-        final UI ihm = new SwingUI();
+        
+        ihm = new SwingUI();
         gestionErreur.setUI(ihm);
         ihm.start();
-        
-        return null;
+        System.out.println("ola");
+    }
+
+    public void stop() {
+        ihm.stop();
+    }
+
+    public SwingUI getIhm() {
+        return ihm;
+    }
+    
+    public boolean isClosed(){
+        return ihm.isClosed();
     }
 }

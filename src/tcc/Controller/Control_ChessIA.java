@@ -5,27 +5,41 @@
  */
 package tcc.Controller;
 
-import fr.free.jchecs.swg.ExceptionHandler;
-import fr.free.jchecs.swg.SwingUI;
-import fr.free.jchecs.swg.UI;
+import fr.free.jchecs.swg.StartJChess;
+
 
 /**
  *
  * @author Anderson
  */
-public class Control_ChessIA {
+public class Control_ChessIA implements Runnable{
     
-    private void startJChess(){
-        final ExceptionHandler gestionErreur = new ExceptionHandler();
-        Thread.setDefaultUncaughtExceptionHandler(gestionErreur);
+    StartJChess jchess;
+    
+    public void startJChess(){
+        jchess = new StartJChess();
+        jchess.run();
+    }
+    
+    public void stopJChess(){
+        jchess.stop();
+    }
+    
 
-        final UI ihm = new SwingUI();
-        gestionErreur.setUI(ihm);
-        ihm.start();
+    public void run() {
+        startJChess();
+        while (true) {            
+            if (jchess.isClosed()) {
+                break;
+            }
+        }
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        Control_ChessIA ia = new Control_ChessIA();
         
+        Thread t = new Thread(ia);
+        t.run();
+            System.out.println("ola");
     }
-    
 }
