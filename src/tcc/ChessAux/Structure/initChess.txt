@@ -1,0 +1,8 @@
+w_1 b_8
+R a_h
+N b_g
+B c_f
+Q d
+K e
+w_2 b_7
+P a_b_c_d_e_f_g_h

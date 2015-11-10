@@ -1,0 +1,89 @@
+/*
+#tipos de movimentos
+    
+    vou ter a posicao de "origem" e "destino"
+
+#mov movimento
+	#pega Origem
+	#devolve Destino
+
+#mov captura
+	#pega Origem    ->Atacante
+	#devolve Temp
+	#pega Destino   ->PecaMorta
+	#devolve Lixao
+	#pega Temp
+	#devolve Destino
+    
+  
+Como construir os movimentos essenciais:
+
+#Movimento para o estado init
+    macro up_init; move 5 to -800; move all to initpos; end
+
+#Movimento de Pegar Peca
+    #abre a garra
+    macro pegaIda; up_init; move 7 to -1400; end
+
+    #posicao do tabuleiro: Origem ou Destino
+    square;
+
+    #fecha garra e volta para o init
+    macro pegaVolta; move 7 to -20; up_init; end
+
+
+#Movimento de Devolver Peca
+
+    #confirma se está no init
+    macro devolveIda; up_init; end
+
+    #posicao do tabuleiro: Origem ou Destino
+    square;     		
+
+    #abre a garra e volta para o init
+    macro devolveVolta; move 7 to -1400; up_init; end
+
+
+####################
+### String Final ###
+####################
+
+#Essenciais
+
+->String1 MacrosBasicos
+
+    macro up_init; move 5 to -800; move all to initpos; end
+
+    macro pegaIda; up_init; move 7 to -1400; end
+    macro pegaVolta; move 7 to -20; up_init; end
+
+    macro devolveIda; up_init; end
+    macro devolveVolta; move 7 to -1400; up_init; end
+
+->String a ser montada toda vez MacrosLocais
+    macro origem; ...; end
+    macro destino; ...; end
+
+->String add caso de Captura
+    macro lixao; move 1 to 830, 2 to 120, 3 to -50, 4 to -220; move 5 to 120, 6 to -1280; end       #caso Mov de Captura
+    macro temp; mov 1 to 1500, 2 to 790, 3 to -730, 4 to -1500; move 5 to 670, 6 to 0; end        #caso Mov de Captura
+
+#Duas opções:
+
+#1º Movimento Simples
+    
+->String p/ script de Mov Simples
+    pegaIda; origem; pegaVolta;
+    devolveIda; destino; devolveVolta;
+
+#2º Movimento Captura
+
+->String p/ script de Mov Captura
+    pegaIda; origem; pegaVolta;
+    devolveIda; temp; devolveVolta;
+    pegaIda; destino; pegaVolta;
+    devolveIda; lixao; devolveVolta;
+    pegaIda; temp; pegaVolta;
+    devolveIda; destino; devolveVolta;
+
+*/  

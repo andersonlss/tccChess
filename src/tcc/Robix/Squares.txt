@@ -1,0 +1,64 @@
+a5
+centro_direita; move 1 to -605, 2 to 617, 3 to 982, 4 to 883; move 5 to 665, 6 to 910;
+b5
+centro_direita;	move 1 to -802, 2 to 617, 3 to 1117, 4 to 867; move 5 to 665, 6 to 850;
+c5
+centro_direita;	move 1 to -1045, 2 to 714, 3 to 1120, 4 to 870;	move 5 to 665, 6 to 710;
+d5
+centro_direita;	move 1 to -1216, 2 to 714, 3 to 1120, 4 to 924;	move 5 to 705, 6 to 530;
+e5
+centro_esquerda; move 1 to 1216, 2 to -508, 3 to -1100, 4 to -1034; move 5 to 660, 6 to -560;
+f5
+centro_esquerda; move 1 to 1046, 2 to -448, 3 to -1203, 4 to -917; move 6 to -560; move 5 to 660;
+g5
+centro_esquerda; move 1 to 794, 2 to -344, 3 to -1168, 4 to -937; move 5 to 640, 6 to -820;
+h5
+centro_esquerda; move 1 to 598, 2 to -335, 3 to -1105, 4 to -882; move 5 to 620, 6 to -960;
+a6
+centro_direita;	move 1 to -674, 2 to 738, 3 to 1042, 4 to 989; move 5 to 685, 6 to -930;
+b6
+centro_direita;	move 1 to -866, 2 to 738, 3 to 1042, 4 to 1127;	move 5 to 695, 6 to -1010;
+c6
+centro_direita;	move 1 to -1064, 2 to 738, 3 to 1080, 4 to 1179; move 5 to 685, 6 to -970;
+d6
+centro_direita;	move 1 to -1282, 2 to 736, 3 to 1154, 4 to 1158; move 5 to 700, 6 to -1220;
+e6
+centro_esquerda; move 1 to 1425, 2 to -703, 3 to -1142, 4 to -1110; move 5 to 690, 6 to -680;
+f6
+centro_esquerda; move 1 to 1174, 2 to -663, 3 to -1102, 4 to -1155; move 5 to 650, 6 to -880;
+g6
+centro_esquerda; move 1 to 873, 2 to -523, 3 to -1042, 4 to -1215; move 5 to 680, 6 to -1160;
+h6
+centro_esquerda; move 1 to 610, 2 to -433, 3 to -952, 4 to -1245; move 5 to 690, 6 to -1160;
+a7
+centro_direita; move 1 to -455, 2 to 419, 3 to 1145, 4 to 1325;	move 5 to 725, 6 to -445;
+b7
+centro_direita;	move 1 to -769, 2 to 636, 3 to 1140, 4 to 1358;	move 5 to 725, 6 to -545;
+c7
+centro_direita;	move 1 to -1025, 2 to 706, 3 to 1060, 4 to 1500; move 5 to 710, 6 to -685;
+d7
+centro_direita;	move 1 to -1325, 2 to 776, 3 to 1100, 4 to 1450; move 5 to 720, 6 to -890;
+e7
+centro_esquerda; move 1 to 1335, 2 to -490, 3 to -1390, 4 to -1328; move 5 to 700, 6 to -1000;
+f7
+centro_esquerda; move 1 to 1016, 2 to -387, 3 to -1390, 4 to -1341; move 5 to 700, 6 to -1160;
+g7
+centro_esquerda; move 1 to 861, 2 to -503, 3 to -1229, 4 to -1290; move 5 to 700, 6 to -1460;
+h7
+centro_esquerda; move 1 to 625, 2 to -483, 3 to -1132, 4 to -1255; move 5 to 690, 6 to -1460;
+a8
+centro_direita;	move 1 to -930, 2 to 1300, 3 to 1180, 4 to 920;	move 5 to 690, 6 to -610;
+b8
+centro_direita;	move 1 to -1282, 2 to 1390, 3 to 1300, 4 to 920; move 5 to 710, 6 to -710;
+c8
+centro_direita;	move 1 to -1390, 2 to 1190, 3 to 1270, 4 to 1200; move 5 to 710, 6 to -740;
+d8
+centro_direita;	move 1 to -1420, 2 to 810, 3 to 1350, 4 to 1430; move 5 to 735, 6 to -640;
+e8
+centro_esquerda; move 1 to 1500, 2 to -660, 3 to -1490, 4 to -1380; move 5 to 730, 6 to -1190;
+f8
+centro_esquerda; move 1 to 1148, 2 to -640, 3 to -1430, 4 to -1380; move 5 to 750, 6 to -1190;
+g8
+centro_esquerda; move 1 to 773, 2 to -460, 3 to -1430, 4 to -1380; move 5 to 730, 6 to -1400;
+h8
+centro_esquerda; move 1 to 575, 2 to -570, 3 to -1164, 4 to -1380; move 5 to 720, 6 to -1400;

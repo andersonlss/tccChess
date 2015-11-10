@@ -1,0 +1,19 @@
+<!-- Robix Pod Script --> 
+
+<podScript version="1.0.0">
+ <name>movs.rbxScript</name>
+
+ <text>macro react
+move 1 to 200; move 1 to -200;
+move 1 to 300; move 1 to -300;
+move 1 to 200; move 1 to -200;
+move 1 to 0
+end
+
+macro teste
+move 2 to 200; move 2 to -200;
+move 2 to 200; move 2 to -200;
+end
+
+</text>
+</podScript>

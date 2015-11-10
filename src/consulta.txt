@@ -1,0 +1,34 @@
+
+
+ BoardUI é a classe que controla os movimentos e identifica quais foram os movimentos
+
+
+pesquisar o metodo getPieceAt(coluna, linha)
+
+Quando faço a movimentação de uma peça pelo mouse
+
+1. classe SwingUI.j; linha 975, metodo waitForMove()
+
+2. classe SwingUI.j; linha 809, chamada do metodo "moved(pEvent)"
+
+
+
+#################################################
+
+Em MailboxBoard.java:
+    1. consulto a celula pelo Squares.valueOf(String nomeCelula), como "f5"
+
+    2. Com o Square, podemos obter o seu index com getIndex do tabuleiro
+
+    3. Assim, pode obter a peça corresponde no _piece[index]
+
+    4. metodo getValidTargets(Square orig) retorna Squares[] para as possiveis jogadas
+    validas de uma peca no Square Orig
+
+    5. metodo getValidMoves(final boolean pTrait) interessante para verificar como obter os movimento válidos
+
+        6. linha "final MoveGenerator plateau = _game.getBoard();" obtem a classe que carrega os itens acima
+
+        7. metodo "public Move [] getValidMoves(final boolean pTrait)" em MailboxBoard 
+        é interessante para analisar as jogadas
+
