@@ -65,6 +65,7 @@ import fr.free.jchecs.core.MailboxBoard;
 import fr.free.jchecs.core.Move;
 import fr.free.jchecs.core.MoveGenerator;
 import fr.free.jchecs.core.Player;
+import tcc.Controller.Center_Control;
 
 /**
  * Classe principale de l'interface graphique Swing du jeu d'échecs.
@@ -72,12 +73,24 @@ import fr.free.jchecs.core.Player;
  * @author David Cotton
  */
 final class SwingUI implements MoveListener, UI {
-    
+
+    /**
+     * *************************************************************************
+     * Variaveis add para o TCC - Inicio
+     * ************************************************************************
+     */
     /*
      * Variavel que informar se a classe ja foi fechada
      */
     private boolean isClosed;
-    
+
+    private Center_Control centerCtrl;
+
+    /**
+     * *************************************************************************
+     * Variaveis add para o TCC - Termino
+     * ************************************************************************
+     */
     /**
      * Clé de la propriété "cellsSize".
      */
@@ -973,22 +986,19 @@ final class SwingUI implements MoveListener, UI {
         isClosed = false;
         while (!isClosed) {
             while (_game.getState() == IN_PROGRESS) {
-                System.out.println(".");
                 _lastMove = null;
 
                 final MoveGenerator plateau = _game.getBoard();
                 final Engine ia = _game.getPlayer(plateau.isWhiteActive()).getEngine();
 
-//                final Interpreter a = new Interpreter((MailboxBoard) _game.getBoard(), plateau.isWhiteActive());
-
                 if (ia == null) {
-                    _boardUI.setEnabled(true);
-//                    _lastMove = a.loopTest();
-                    waitForMove();
-                    System.out.println("wait");
+                    _boardUI.setEnabled(false);
+                    //waitForMove()
+                    _lastMove = waitForMoveFromControl();
                 } else {
                     _boardUI.setEnabled(false);
-                    _lastMove = ia.getMoveFor(plateau);
+//                    _lastMove = ia.getMoveFor(plateau);
+                    _lastMove = getMoveFromAI(ia, plateau);
                 }
 
                 if (_activeSample != null) {
@@ -1010,12 +1020,12 @@ final class SwingUI implements MoveListener, UI {
                             + "ms <=> " + (int) (1000.0 / etime * hmc) + " nodes/s");
                 }
 
-                if (!isClosed) {
+//                if (!isClosed) {
+                System.out.println("");
                     _game.moveFromCurrent(_lastMove);
-                } else {
-                    
-                    break;
-                }
+//                } else {
+//                    break;
+//                }
             }
             _boardUI.setEnabled(false);
             try {
@@ -1029,6 +1039,8 @@ final class SwingUI implements MoveListener, UI {
     }
 
     /**
+     * Metodo chamado quando terminar a execução ou quando fecha
+     *
      * Arrète l'interface utilisateur.
      *
      * @see UI#stop()
@@ -1036,8 +1048,7 @@ final class SwingUI implements MoveListener, UI {
     public void stop() {
         saveProperties();
         isClosed = true;
-//        _mainFrame.dispose();
-        notifyAll();
+        System.exit(0);
     }
 
     /**
@@ -1046,7 +1057,7 @@ final class SwingUI implements MoveListener, UI {
     private synchronized void waitForMove() {
         try {
             while ((_lastMove == null) && (!isClosed)) {
-                System.out.print("-");
+                System.out.println("a");
                 wait();
             }
         } catch (final InterruptedException e) {
@@ -1090,29 +1101,53 @@ final class SwingUI implements MoveListener, UI {
 
     /**
      * **************************************************************************
-     *  Metodos inseridos para adaptação do Tcc
+     * Metodos inseridos para adaptação do Tcc
      * ***************************************************************************
      */
-    
     public boolean isClosed() {
         return isClosed;
     }
-    
-    public synchronized boolean recebeMove(String move) {
 
-        final MoveGenerator moveGen = _game.getBoard();
-        
-        Interpreter inter = new Interpreter((MailboxBoard) (moveGen), moveGen.isWhiteActive());
-        
-        Move tmp = inter.getMoveFromString_Move(move);
-        
-        if (tmp != null) {
-            _lastMove = tmp;
-            return true;
-        } else {
-            System.err.println("ERROR: String Move Invalida");
-            return false;
-        }
+    public void setCenterCtrl(Center_Control centerCtrl) {
+        this.centerCtrl = centerCtrl;
     }
+    
+    /*
+     * Metodos para Obter a jogada da camera
+     */
+    private Move waitForMoveFromControl() {
+        return centerCtrl.getControlChessIA().coletaMove();
+    }
+
+    /*
+     * Metodos para Robix
+     */
+    private Move getMoveFromAI(Engine ai, MoveGenerator moveGen) {
+        Move moveAI = ai.getMoveFor(moveGen);
+        sendMoveStringToRobix(moveAI);
+        return moveAI;
+    }
+    
+    private void sendMoveStringToRobix(Move move) {
+        centerCtrl.getControlChessIA().sendMoveStringToRobix(move);
+    }
+    
+//    public synchronized boolean recebeMove(String move) {
+//
+//        final MoveGenerator moveGen = _game.getBoard();
+//
+//        Interpreter inter = new Interpreter((MailboxBoard) (moveGen), moveGen.isWhiteActive());
+//
+//        Move tmp = inter.getMoveFromString_Move(move);
+//
+//        if (tmp != null) {
+//            _lastMove = tmp;
+//            //notifyAll();
+//            return true;
+//        } else {
+//            System.err.println("ERROR: String Move Invalida");
+//            return false;
+//        }
+//    }
 
 }

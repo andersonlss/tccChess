@@ -18,19 +18,23 @@
  */
 package fr.free.jchecs.swg;
 
+import fr.free.jchecs.core.Game;
+import fr.free.jchecs.core.MoveGenerator;
+import tcc.Controller.Center_Control;
+
 /**
  * Lance l'interface Swing du jeu d'échecs.
  *
  * @author David Cotton
  */
-public final class StartJChess {
+public final class BridgeToJChess {
 
     private SwingUI ihm;
 
     /**
      * Classe utilitaire : ne pas instancier !
      */
-    public StartJChess() {
+    public BridgeToJChess() {
         // Rien de spécifique...
     }
 
@@ -40,11 +44,12 @@ public final class StartJChess {
      * @param pArgs Arguments de la ligne de commande : ignorés, aucun argument
      * attendu.
      */
-    public void run() {
+    public void run(Center_Control centerCtrl) {
         final ExceptionHandler gestionErreur = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(gestionErreur);
         
         ihm = new SwingUI();
+        ihm.setCenterCtrl(centerCtrl);
         gestionErreur.setUI(ihm);
         ihm.start();
         System.out.println("ola");
@@ -54,8 +59,16 @@ public final class StartJChess {
         ihm.stop();
     }
 
-    public SwingUI getIhm() {
+    public SwingUI getSwingUI() {
         return ihm;
+    }
+    
+//    public boolean sendStringMove(String move){
+//        return ihm.recebeMove(move);
+//    }
+    
+    public MoveGenerator getBoardFromGame(){
+        return ihm.getGame().getBoard();
     }
     
     public boolean isClosed(){
