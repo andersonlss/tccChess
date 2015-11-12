@@ -4,7 +4,7 @@ Ultimas noticias.
   Faço como um loop de conversas entre os controllers.
   Como na Figura abaixo
   
-    ![Logica Controllers](https://github.com/andersonlss/tccChess/blob/master/logica.png)
+    ![Logica Controllers](andersonlss/tccChess/blob/master/logica.png)
     
   Seguindo as condições:
       
