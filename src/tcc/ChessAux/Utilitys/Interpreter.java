@@ -5,6 +5,7 @@
  */
 package tcc.ChessAux.Utilitys;
 
+import tcc.Robix.MoveRobix;
 import tcc.ChessAux.Structure.Board;
 import tcc.ChessAux.Structure.Piece;
 
@@ -18,7 +19,7 @@ public class Interpreter {
     private Piece p0, p1;
     private String move, player, status;
     private boolean valid;
-    private Move jogada;
+    private MoveRobix jogada;
 
     public Interpreter(Board board, String move, String player) {
         this.board = board;
@@ -95,14 +96,14 @@ public class Interpreter {
             isCapture = true;
         }
         
-        jogada = new Move(origem, destino, isCapture);
+        jogada = new MoveRobix(origem, destino, isCapture);
     }
 
     public String getMov() {
         return jogada.getJogada();
     }
 
-    public Move getJogada() {
+    public MoveRobix getJogada() {
         return jogada;
     }
     
