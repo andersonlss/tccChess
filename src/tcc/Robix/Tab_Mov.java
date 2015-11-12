@@ -5,7 +5,6 @@
  */
 package tcc.Robix;
 
-import tcc.ChessAux.Utilitys.Move;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -34,7 +33,7 @@ public class Tab_Mov {
 //    }
 
     private void leSquares() {
-        String caminho = System.getProperty("user.dir") + "/src/Robix/Squares.txt";
+        String caminho = System.getProperty("user.dir") + "/src/tcc/Robix/Squares.txt";
         File f = new File(caminho);
         Scanner in = null;
 
@@ -50,7 +49,7 @@ public class Tab_Mov {
         }
     }
 
-    public String getScript(Move jogada){
+    public String getScript(MoveRobix jogada){
         
         String origem = getMov(jogada.getOrigem());
         String destino = getMov(jogada.getDestino());
