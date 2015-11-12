@@ -144,8 +144,6 @@ final class NegaScoutEngine extends AbstractEngine {
     @Override
     protected Move searchMoveFor(final MoveGenerator pEtat, final Move[] pCoups) {
         
-        
-        System.out.println("IKA");
         assert pEtat != null;
         assert pCoups != null;
 

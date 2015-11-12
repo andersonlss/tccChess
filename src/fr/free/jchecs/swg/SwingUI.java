@@ -65,7 +65,7 @@ import fr.free.jchecs.core.MailboxBoard;
 import fr.free.jchecs.core.Move;
 import fr.free.jchecs.core.MoveGenerator;
 import fr.free.jchecs.core.Player;
-import tcc.Controller.Center_Control;
+import tcc.Controller.Control_Center;
 
 /**
  * Classe principale de l'interface graphique Swing du jeu d'échecs.
@@ -84,7 +84,7 @@ final class SwingUI implements MoveListener, UI {
      */
     private boolean isClosed;
 
-    private Center_Control centerCtrl;
+    private Control_Center centerCtrl;
 
     /**
      * *************************************************************************
@@ -1108,7 +1108,7 @@ final class SwingUI implements MoveListener, UI {
         return isClosed;
     }
 
-    public void setCenterCtrl(Center_Control centerCtrl) {
+    public void setCenterCtrl(Control_Center centerCtrl) {
         this.centerCtrl = centerCtrl;
     }
     
@@ -1116,20 +1116,20 @@ final class SwingUI implements MoveListener, UI {
      * Metodos para Obter a jogada da camera
      */
     private Move waitForMoveFromControl() {
-        return centerCtrl.getControlChessIA().coletaMove();
+        return centerCtrl.getCtrlChessIA().coletaMove();
     }
 
     /*
      * Metodos para Robix
      */
+     private void sendMoveStringToRobix(Move move) {
+        centerCtrl.getCtrlChessIA().sendMoveStringToRobix(move);
+    }
+    
     private Move getMoveFromAI(Engine ai, MoveGenerator moveGen) {
         Move moveAI = ai.getMoveFor(moveGen);
         sendMoveStringToRobix(moveAI);
         return moveAI;
-    }
-    
-    private void sendMoveStringToRobix(Move move) {
-        centerCtrl.getControlChessIA().sendMoveStringToRobix(move);
     }
     
 //    public synchronized boolean recebeMove(String move) {

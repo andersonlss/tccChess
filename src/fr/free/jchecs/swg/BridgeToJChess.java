@@ -20,7 +20,7 @@ package fr.free.jchecs.swg;
 
 import fr.free.jchecs.core.Game;
 import fr.free.jchecs.core.MoveGenerator;
-import tcc.Controller.Center_Control;
+import tcc.Controller.Control_Center;
 
 /**
  * Lance l'interface Swing du jeu d'échecs.
@@ -44,7 +44,7 @@ public final class BridgeToJChess {
      * @param pArgs Arguments de la ligne de commande : ignorés, aucun argument
      * attendu.
      */
-    public void run(Center_Control centerCtrl) {
+    public void run(Control_Center centerCtrl) {
         final ExceptionHandler gestionErreur = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(gestionErreur);
         
