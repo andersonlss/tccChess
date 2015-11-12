@@ -10,6 +10,8 @@ import fr.free.jchecs.core.Move;
 import fr.free.jchecs.core.MoveGenerator;
 import fr.free.jchecs.swg.BridgeToJChess;
 import fr.free.jchecs.tcc.Interpreter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,10 +19,12 @@ import fr.free.jchecs.tcc.Interpreter;
  */
 public class Control_ChessIA implements Runnable {
 
-    private Center_Control centerCtrl;
-    private BridgeToJChess jchess;
+    private Control_Center centerCtrl;
+    private BridgeToJChess brgJChess;
+    
+    private String strMoveIA = "";
 
-    public Control_ChessIA(Center_Control centerCtrl) {
+    public Control_ChessIA(Control_Center centerCtrl) {
         this.centerCtrl = centerCtrl;
 //        startJChess();
     }
@@ -30,40 +34,32 @@ public class Control_ChessIA implements Runnable {
     }
 
     public BridgeToJChess getJchess() {
-        return jchess;
+        return brgJChess;
     }
 
-    public Center_Control getCenterCtrl() {
+    public Control_Center getCenterCtrl() {
         return centerCtrl;
     }
 
     public void startJChess() {
-        jchess = new BridgeToJChess();
-        jchess.run(getCenterCtrl());
+        brgJChess = new BridgeToJChess();
+        brgJChess.run(getCenterCtrl());
     }
 
     public void stopJChess() {
-        jchess.stop();
+        brgJChess.stop();
     }
 
     @Override
     public void run() {
         startJChess();
         while (true) {
-            if (jchess.isClosed()) {
+            if (brgJChess.isClosed()) {
                 break;
             }
         }
     }
-
-    public static void main(String[] args) throws InterruptedException {
-        Control_ChessIA ia = new Control_ChessIA();
-
-        Thread t = new Thread(ia);
-        t.start();
-        System.out.println("ola");
-    }
-
+    
     /*
      * Operacoes para SwingUI
      */
@@ -72,12 +68,12 @@ public class Control_ChessIA implements Runnable {
      *
      */
     public Move coletaMove() {
-        System.out.println("\nColeta");
+//        System.out.println("\nColeta");
         String moveStr = "";
         Move move;
         while (true) {
-            if (!centerCtrl.getTe().strMoveIsEmpty()) {
-                moveStr = centerCtrl.getTe().getStrMove();
+            if (!centerCtrl.getCtrlImgProc().strMoveImgIsEmpty()) {
+                moveStr = centerCtrl.getCtrlImgProc().getStrMoveImg();
                 move = getMoveFromStringMove(moveStr);
                 if (move != null) {
                     break;
@@ -98,7 +94,7 @@ public class Control_ChessIA implements Runnable {
      */
     private Move getMoveFromStringMove(String move) {
 
-        final MoveGenerator moveGen = jchess.getBoardFromGame();
+        final MoveGenerator moveGen = brgJChess.getBoardFromGame();
 
         Interpreter inter = new Interpreter((MailboxBoard) (moveGen), moveGen.isWhiteActive());
 
@@ -115,6 +111,30 @@ public class Control_ChessIA implements Runnable {
     /*
      * Operacoes para Control_Robix
      */
+    public synchronized String getStrMoveIA() {
+        String saida = strMoveIA;
+        strMoveIA = "";
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Control_ImgProc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return saida;
+    }
+
+    private void setStrMoveIA(String strMoveIA) {
+        this.strMoveIA = strMoveIA;
+    }
+    
+    public boolean strMoveIAIsEmpty(){
+        if (strMoveIA.equalsIgnoreCase("")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
     public void sendMoveStringToRobix(Move move) {
         String from = move.getFrom().getFENString();
         String to = move.getTo().getFENString();
@@ -125,8 +145,7 @@ public class Control_ChessIA implements Runnable {
             isCapture = "false";
         }
 
-        System.out.println("jogadaIA = " + from + "_" + to + "_" + isCapture);
-        //return "";
+        setStrMoveIA(from + "_" + to + "_" + isCapture);
     }
 
 }

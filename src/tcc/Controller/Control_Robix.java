@@ -5,104 +5,75 @@
  */
 package tcc.Controller;
 
-import tcc.ChessAux.Utilitys.Move;
-import tcc.Robix.Connect;
-import tcc.Robix.Tab_Mov;
-import com.robix.RbxGhostException;
-import com.robix.nexway.Pod;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import tcc.Robix.MoveRobix;
+import tcc.Robix.BridgeToRobix;
 
 /**
  *
  * @author Anderson
  */
-public class Control_Robix {
+public class Control_Robix implements Runnable{
 
-    private Tab_Mov tab_mov;
-    private Connect connect;
+    private Control_Center centerCtrl;
+    private BridgeToRobix brgRobix;
+    
+    private boolean robixStopped;
 
-    public Control_Robix() {
-        tab_mov = new Tab_Mov();
-        connect = new Connect();
+    public Control_Robix(Control_Center centerCtrl) {
+        this.centerCtrl = centerCtrl;
+        this.brgRobix = new BridgeToRobix();
     }
     
-    private void waitForPodCmdFinished(Pod pod, int seqNum) {
-        // Wait for pod command to finish
-        while (!pod.isPodCmdFinished(seqNum)) {
-            if (pod.isGhost()) {
-                try {
-                    throw new RbxGhostException("Disconnected from Pod.");
-                } catch (RbxGhostException ex) {
-                    Logger.getLogger(Control_Robix.class.getName()).log(Level.SEVERE, null, ex);
+    public boolean isRobixStopped() {
+        boolean resp = robixStopped;
+        updateRobixStopped();
+        return resp;
+    }
+
+    private void updateRobixStopped() {
+        robixStopped = !robixStopped;
+    }
+
+    
+    
+    private MoveRobix getMoveFromStringMove(String moveIA) {
+        if (moveIA.matches("[a-h][1-8]_[a-h][1-8]_(false|true)")) {
+            return new MoveRobix(moveIA);
+        } else {
+            System.err.println("ERROR: String Move Invalida: "+moveIA);
+            return null;
+        }
+    }
+    
+    public MoveRobix coletaMove() {
+        MoveRobix move;
+        while (true) {
+            if (!centerCtrl.getCtrlChessIA().strMoveIAIsEmpty()) {
+                String moveStr = centerCtrl.getCtrlChessIA().getStrMoveIA();
+                move = getMoveFromStringMove(moveStr);
+                if (move != null) {
+                //    System.out.println(move.toString());
+                    break;
+                } else {
+                    System.out.println("Esperando Jogada Válida");
                 }
             }
+        }
 
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException ex) {
-                // Ignored in this single-threaded example application.
+        return move;
+    }
+    
+    @Override
+    public void run() {
+        while (true) {            
+            MoveRobix move = coletaMove();
+            if (move != null) {
+                //brgRobix.efetuaJogada(move);
+                System.out.println("Robix jogou: "+move.toString());
+                updateRobixStopped();
+                System.out.println("");
             }
         }
     }
-
-    private void runQuickScript(Pod pod, Move jogada) {
-
-        String script = tab_mov.getScript(jogada);
-
-        if (script == null) {
-            System.out.println(">null");
-            return;
-        }
-
-        System.out.println("\t\t>>> Running quick script for move: "+jogada.getJogada());
-        //System.out.println("Script= " + jogada.getJogada() + ":=>\n" + script);
-
-        // Start quick script running
-        int seqNum;
-        try {
-            
-            seqNum = pod.runQuickScript(script);
-            waitForPodCmdFinished(pod, seqNum);
-            
-        } catch (RbxGhostException ex) {
-            Logger.getLogger(Control_Robix.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-    
-    public void efetuaJogada(Move jogada){
-        runQuickScript(connect.getPod(), jogada);
-    }
-    
-    public void destroy(){
-        connect.destroy();
-    }
-
-    
-//    public static void main(String[] args) {
-//        Scanner entrada = new Scanner(System.in);
-//
-//        Control_Robix cr = new Control_Robix();
-//        String mov;
-//
-//        do {
-//            System.out.print(">");
-//            mov = entrada.nextLine();
-//
-////            cr.efetuaJogada(new Move);
-////            
-////            cr.efetuaJogada(new Move("", mov, true));
-////            System.out.println(tab_mov.getScript(mov, true));
-////            
-////            System.out.println(tab_mov.getScript(mov, false));
-//            
-//
-//        } while (!mov.equalsIgnoreCase("exit"));
-//        
-////        connect.destroyProcess();
-//
-//        System.out.println("Finalizado");
-//    }
 }

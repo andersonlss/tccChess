@@ -7,7 +7,7 @@ package tcc.Controller;
 
 import tcc.ChessAux.Structure.Board;
 import tcc.ChessAux.Utilitys.Interpreter;
-import tcc.ChessAux.Utilitys.Move;
+import tcc.Robix.MoveRobix;
 import java.util.Scanner;
 
 /**
@@ -18,7 +18,7 @@ public class Control_BoardAux {
 
     private Board board;
     private String atualJogador;
-    private Move atualJogada;
+    private MoveRobix atualJogada;
 
     public Control_BoardAux() {
         this.atualJogador = "w";
@@ -70,7 +70,7 @@ public class Control_BoardAux {
         return movIsValid;
     }
 
-    public Move getAtualJogada() {
+    public MoveRobix getAtualJogada() {
         return atualJogada;
     }
     
