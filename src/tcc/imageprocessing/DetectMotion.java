@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 import tcc.imageprocessing.elementos.ElementoEstruturante;
 import tcc.imageprocessing.elementos.Imagem;
@@ -26,7 +27,7 @@ import tcc.imageprocessing.operations.OperacaoMorfologica;
 public class DetectMotion {
 
     private final Webcam webcam;
-    private final WebcamMotionDetector detector;
+    private WebcamMotionDetector detector;
 
     private BufferedImage imageInicial;
     private BufferedImage imageFinal;
@@ -36,13 +37,12 @@ public class DetectMotion {
         webcam.setViewSize(WebcamResolution.VGA.getSize());
         webcam.open(true);
 
-        detector = new WebcamMotionDetector(webcam);
-        detector.setInterval(500); // one check per 500 ms
-        detector.setPixelThreshold(20);
-
     }
 
     public String getSaida() {
+        detector = new WebcamMotionDetector(webcam);
+        detector.setInterval(2000); // one check per 500 ms
+        detector.setPixelThreshold(20);
         detector.start();
         imageInicial = webcam.getImage();
 
@@ -58,12 +58,14 @@ public class DetectMotion {
             } else {
                 if (motion) {
                     motion = false;
+                    System.out.println("getImage()");
                     imageFinal = webcam.getImage();
                     saida = processar(imageInicial, imageFinal);
+                    System.out.println("saidaAtual=" + saida);
                     if (saida.matches("[a-h][1-8]_[a-h][1-8]")) {
                         imageInicial = imageFinal;
                         break;
-                    } 
+                    }
                 }
             }
             try {
@@ -73,7 +75,9 @@ public class DetectMotion {
             }
         }
 
+        System.out.println("");
         detector.stop();
+        System.out.println("");
 
         return saida;
     }
@@ -86,17 +90,30 @@ public class DetectMotion {
         //IMAGEM PROCESSA: EROSÃO
         Imagem imagem = OperacaoMorfologica.erodir(
                 OperacaoMorfologica.subtracao(new Imagem(imageInicial), new Imagem(imageFinal)), ee);
+        
+        BufferedImage image3 = new BufferedImage(imageInicial.getWidth(), imageInicial.getHeight(), 1);
 
         //LIMIARIZAÇÃO
         int[][] matriz = imagem.getImagem();
         for (int x = 0; x < imagem.getLine(); x++) {
             for (int y = 0; y < imagem.getColumn(); y++) {
+                int bDiff = matriz[x][y];
+                int diff = (255 << 24) | (bDiff << 16) | (bDiff << 8) | bDiff;
+                image3.setRGB(x, y, diff);
                 if (matriz[x][y] <= 30) {
                     matriz[x][y] = 0;
                 } else {
                     matriz[x][y] = 255;
                 }
             }
+        }
+
+        try {
+            ImageIO.write(imageInicial, "jpg", new File("ruido/img1.jpg"));
+            ImageIO.write(imageFinal, "jpg", new File("ruido/img2.jpg"));
+            ImageIO.write(image3, "jpg", new File("ruido/sub.jpg"));
+        } catch (IOException ex) {
+            Logger.getLogger(DetectMotion.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         //VERIFICA MUDANÇA
@@ -111,6 +128,10 @@ public class DetectMotion {
                     e.getStackTrace();
                 }
             }
+        }
+        
+        if(casa.size() > 2){
+            System.out.println("");
         }
 
         //FORMATA SAÍDA
