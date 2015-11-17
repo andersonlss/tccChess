@@ -146,6 +146,17 @@ public class Control_ChessIA implements Runnable {
         }
 
         setStrMoveIA(from + "_" + to + "_" + isCapture);
+        
+        waitToMoveRobix();
+        
+    }
+    
+    private void waitToMoveRobix(){
+        while (true) {            
+            if (centerCtrl.getCtrlRobix().isRobixStopped()) {
+                break;
+            }
+        }
     }
 
 }
