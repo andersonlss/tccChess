@@ -40,48 +40,12 @@ public class DetectMotion {
         detector.setInterval(500); // one check per 500 ms
         detector.setPixelThreshold(20);
 
-        imageInicial = webcam.getImage();
-
-//        detector.start();
-//
-//        imageInicial = webcam.getImage();
-//
-//        Thread t = new Thread("motion-detector") {
-//
-//            @Override
-//            public void run() {
-//
-//                boolean motion = false;
-//
-//                while (true) {
-//                    if (detector.isMotion()) {
-//                        if (!motion) {
-//                            motion = true;
-//                        }
-//                    } else {
-//                        if (motion) {
-//                            motion = false;
-//                            imageFinal = webcam.getImage();
-//                            processar(imageInicial, imageFinal);
-//                            imageInicial = imageFinal;
-//                        }
-//                    }
-//                    try {
-//                        Thread.sleep(50); // must be smaller than interval
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        };
-//
-//        t.setDaemon(true);
-//        t.start();
     }
 
     public String getSaida() {
         detector.start();
-        
+        imageInicial = webcam.getImage();
+
         String saida = null;
 
         boolean motion = false;
@@ -96,8 +60,10 @@ public class DetectMotion {
                     motion = false;
                     imageFinal = webcam.getImage();
                     saida = processar(imageInicial, imageFinal);
-                    imageInicial = imageFinal;
-                    break;
+                    if (saida.matches("[a-h][1-8]_[a-h][1-8]")) {
+                        imageInicial = imageFinal;
+                        break;
+                    } 
                 }
             }
             try {
@@ -108,7 +74,7 @@ public class DetectMotion {
         }
 
         detector.stop();
-        
+
         return saida;
     }
 

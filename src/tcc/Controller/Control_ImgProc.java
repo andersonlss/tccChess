@@ -60,6 +60,11 @@ public class Control_ImgProc implements Runnable {
             if (centerCtrl.getCtrlRobix().isRobixStopped()) {
                 return true;
             }
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Control_ChessIA.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -82,6 +87,7 @@ public class Control_ImgProc implements Runnable {
                 //bridgeToDetectMotion.getDm().getSaida();
                 
                 //String moveFromImg = stringsDoTeclado();
+                System.out.println("esperando movimento");
                 String moveFromImg = bridgeToDetectMotion.getDm().getSaida();
                 System.out.println(moveFromImg);
                 /**

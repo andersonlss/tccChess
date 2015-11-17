@@ -26,13 +26,13 @@ public class Control_Center {
 
     public void starts() {
         try {
-            new Thread(ctrlImgProc).start();
+            new Thread(ctrlImgProc, "ctrlImgProc").start();
             Thread.sleep(200);
 
-            new Thread(ctrlRobix).start();
+            new Thread(ctrlRobix, "ctrlRobix").start();
             Thread.sleep(200);
             
-            new Thread(ctrlChessIA).start();
+            new Thread(ctrlChessIA, "ctrlChessIA").start();
         
         } catch (InterruptedException ex) {
             Logger.getLogger(Control_Center.class.getName()).log(Level.SEVERE, null, ex);

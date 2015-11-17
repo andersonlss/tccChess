@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  *
  * @author Gabriel
  */
-public class BridgeToDetectMotion implements Runnable {
+public class BridgeToDetectMotion  {
     
     private DetectMotion dm;
 
@@ -24,16 +24,14 @@ public class BridgeToDetectMotion implements Runnable {
     public DetectMotion getDm() {
         return dm;
     }
-    
-    
-    
-    @Override
-    public void run() {
-        try {
-            System.in.read();
-        } catch (IOException ex) {
-            Logger.getLogger(BridgeToDetectMotion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    
+//    @Override
+//    public void run() {
+//        try {
+//            System.in.read();
+//        } catch (IOException ex) {
+//            Logger.getLogger(BridgeToDetectMotion.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 
 }
