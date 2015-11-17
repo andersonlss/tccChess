@@ -18,7 +18,7 @@ public class Control_Robix implements Runnable{
     private Control_Center centerCtrl;
     private BridgeToRobix brgRobix;
     
-    private boolean robixStopped;
+    private boolean robixStopped = false;
 
     public Control_Robix(Control_Center centerCtrl) {
         this.centerCtrl = centerCtrl;
@@ -26,8 +26,15 @@ public class Control_Robix implements Runnable{
     }
     
     public boolean isRobixStopped() {
-        boolean resp = robixStopped;
-        updateRobixStopped();
+        boolean resp;
+//        updateRobixStopped();
+//        return resp;
+        if (robixStopped) {
+            updateRobixStopped();
+            resp = true;
+        } else {
+            resp = false;
+        }
         return resp;
     }
 
@@ -69,7 +76,7 @@ public class Control_Robix implements Runnable{
         while (true) {            
             MoveRobix move = coletaMove();
             if (move != null) {
-                //brgRobix.efetuaJogada(move);
+                brgRobix.efetuaJogada(move);
                 System.out.println("Robix jogou: "+move.toString());
                 updateRobixStopped();
                 System.out.println("");
