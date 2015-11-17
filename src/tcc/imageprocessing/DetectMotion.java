@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import tcc.imageprocessing.elementos.ElementoEstruturante;
 import tcc.imageprocessing.elementos.Imagem;
@@ -37,45 +39,80 @@ public class DetectMotion {
         detector = new WebcamMotionDetector(webcam);
         detector.setInterval(500); // one check per 500 ms
         detector.setPixelThreshold(20);
-        detector.start();
 
         imageInicial = webcam.getImage();
 
-        Thread t = new Thread("motion-detector") {
-
-            @Override
-            public void run() {
-
-                boolean motion = false;
-
-                while (true) {
-                    if (detector.isMotion()) {
-                        if (!motion) {
-                            motion = true;
-                        }
-                    } else {
-                        if (motion) {
-                            motion = false;
-                            imageFinal = webcam.getImage();
-                            processar(imageInicial, imageFinal);
-                            imageInicial = imageFinal;
-                        }
-                    }
-                    try {
-                        Thread.sleep(50); // must be smaller than interval
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-
-        t.setDaemon(true);
-        t.start();
-
+//        detector.start();
+//
+//        imageInicial = webcam.getImage();
+//
+//        Thread t = new Thread("motion-detector") {
+//
+//            @Override
+//            public void run() {
+//
+//                boolean motion = false;
+//
+//                while (true) {
+//                    if (detector.isMotion()) {
+//                        if (!motion) {
+//                            motion = true;
+//                        }
+//                    } else {
+//                        if (motion) {
+//                            motion = false;
+//                            imageFinal = webcam.getImage();
+//                            processar(imageInicial, imageFinal);
+//                            imageInicial = imageFinal;
+//                        }
+//                    }
+//                    try {
+//                        Thread.sleep(50); // must be smaller than interval
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        };
+//
+//        t.setDaemon(true);
+//        t.start();
     }
 
-    public void processar(BufferedImage imageInicial, BufferedImage imageFinal) {
+    public String getSaida() {
+        detector.start();
+        
+        String saida = null;
+
+        boolean motion = false;
+
+        while (true) {
+            if (detector.isMotion()) {
+                if (!motion) {
+                    motion = true;
+                }
+            } else {
+                if (motion) {
+                    motion = false;
+                    imageFinal = webcam.getImage();
+                    saida = processar(imageInicial, imageFinal);
+                    imageInicial = imageFinal;
+                    break;
+                }
+            }
+            try {
+                Thread.sleep(50); // must be smaller than interval
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        detector.stop();
+        
+        return saida;
+    }
+
+    public String processar(BufferedImage imageInicial, BufferedImage imageFinal) {
         //CARREGA ELEMENTO ESTRUTURANTE
         ElementoEstruturante ee = new ElementoEstruturante();
         ee.carregarElementoEstruturante(new File("imageprocessing/EE15.ee"));
@@ -95,7 +132,7 @@ public class DetectMotion {
                 }
             }
         }
-        
+
         //VERIFICA MUDANÇA
         Set<String> casa = new HashSet<>();
         for (int y = 0; y < imagem.getLine(); y++) {
@@ -109,20 +146,20 @@ public class DetectMotion {
                 }
             }
         }
-        
+
         //FORMATA SAÍDA
         StringBuilder builder = new StringBuilder();
         for (Iterator<String> iterator = casa.iterator(); iterator.hasNext();) {
             String next = iterator.next();
             builder.append(next);
-            if(iterator.hasNext()){
+            if (iterator.hasNext()) {
                 builder.append("_");
             }
         }
-        System.out.println(builder.toString());
-        //return builder.toString();
+        //System.out.println(builder.toString());
+        return builder.toString();
     }
-    
+
     public static String posicao(int x, int y) {
         StringBuilder saida = new StringBuilder();
         if (y >= 6 && y < 62) {
@@ -273,9 +310,8 @@ public class DetectMotion {
         return saida.toString();
     }
 
-    public static void main(String[] args) throws IOException {
-        new DetectMotion();
-        System.in.read();
-    }
-
+//    public static void main(String[] args) throws IOException {
+//        new DetectMotion();
+//        System.in.read();
+//    }
 }

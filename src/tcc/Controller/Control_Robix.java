@@ -5,7 +5,8 @@
  */
 package tcc.Controller;
 
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tcc.Robix.MoveRobix;
 import tcc.Robix.BridgeToRobix;
 
@@ -13,18 +14,18 @@ import tcc.Robix.BridgeToRobix;
  *
  * @author Anderson
  */
-public class Control_Robix implements Runnable{
+public class Control_Robix implements Runnable {
 
     private Control_Center centerCtrl;
     private BridgeToRobix brgRobix;
-    
-    private boolean robixStopped = false;
+
+    private boolean robixStopped = true;
 
     public Control_Robix(Control_Center centerCtrl) {
         this.centerCtrl = centerCtrl;
         this.brgRobix = new BridgeToRobix();
     }
-    
+
     public boolean isRobixStopped() {
         boolean resp;
 //        updateRobixStopped();
@@ -42,17 +43,15 @@ public class Control_Robix implements Runnable{
         robixStopped = !robixStopped;
     }
 
-    
-    
     private MoveRobix getMoveFromStringMove(String moveIA) {
         if (moveIA.matches("[a-h][1-8]_[a-h][1-8]_(false|true)")) {
             return new MoveRobix(moveIA);
         } else {
-            System.err.println("ERROR: String Move Invalida: "+moveIA);
+            System.err.println("ERROR: String Move Invalida: " + moveIA);
             return null;
         }
     }
-    
+
     public MoveRobix coletaMove() {
         MoveRobix move;
         while (true) {
@@ -60,24 +59,29 @@ public class Control_Robix implements Runnable{
                 String moveStr = centerCtrl.getCtrlChessIA().getStrMoveIA();
                 move = getMoveFromStringMove(moveStr);
                 if (move != null) {
-                //    System.out.println(move.toString());
+                    System.out.println(move.toString());
                     break;
                 } else {
                     System.out.println("Esperando Jogada Válida");
                 }
             }
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Control_ChessIA.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return move;
     }
-    
+
     @Override
     public void run() {
-        while (true) {            
+        while (true) {
             MoveRobix move = coletaMove();
             if (move != null) {
-                brgRobix.efetuaJogada(move);
-                System.out.println("Robix jogou: "+move.toString());
+                //brgRobix.efetuaJogada(move);
+                System.out.println("Robix jogou: " + move.toString());
                 updateRobixStopped();
                 System.out.println("");
             }

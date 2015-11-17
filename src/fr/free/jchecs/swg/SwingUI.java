@@ -995,6 +995,7 @@ final class SwingUI implements MoveListener, UI {
                     _boardUI.setEnabled(false);
                     //waitForMove()
                     _lastMove = waitForMoveFromControl();
+                    System.out.println(_lastMove);
                 } else {
                     _boardUI.setEnabled(false);
 //                    _lastMove = ia.getMoveFor(plateau);

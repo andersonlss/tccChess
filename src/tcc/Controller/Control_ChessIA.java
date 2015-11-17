@@ -72,14 +72,21 @@ public class Control_ChessIA implements Runnable {
         String moveStr = "";
         Move move;
         while (true) {
+//            System.out.println(".");
             if (!centerCtrl.getCtrlImgProc().strMoveImgIsEmpty()) {
                 moveStr = centerCtrl.getCtrlImgProc().getStrMoveImg();
+                System.out.println("moveStr=" + moveStr);
                 move = getMoveFromStringMove(moveStr);
                 if (move != null) {
                     break;
                 } else {
                     System.out.println("Esperando Jogada Válida");
                 }
+            }
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Control_ChessIA.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -147,7 +154,7 @@ public class Control_ChessIA implements Runnable {
 
         setStrMoveIA(from + "_" + to + "_" + isCapture);
         
-        waitToMoveRobix();
+        //waitToMoveRobix();
         
     }
     
