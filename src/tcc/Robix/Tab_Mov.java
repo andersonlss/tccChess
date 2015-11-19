@@ -44,8 +44,10 @@ public class Tab_Mov {
         }
 
         while (in.hasNextLine()) {
-            moves.put(in.nextLine(), in.nextLine().replaceAll("\t", " "));
-//            System.out.println(in.nextLine()+".\n> "+in.nextLine().replaceAll("\t", " "));
+            moves.put(in.nextLine().replaceAll("macro ", ""),
+                    in.nextLine().replaceAll("\t", ""));
+            //System.out.println(in.nextLine().replaceAll("macro ", "")+">"+in.nextLine().replaceAll("\t", ""));
+            in.nextLine();
         }
     }
 
@@ -63,9 +65,9 @@ public class Tab_Mov {
         return moves.get(key);
     }
 
-//    public static void main(String[] args) {
-//        Tab_Mov tm = new Tab_Mov();
-//        
-//    }
+    public static void main(String[] args) {
+        Tab_Mov tm = new Tab_Mov();
+        
+    }
 
 }
