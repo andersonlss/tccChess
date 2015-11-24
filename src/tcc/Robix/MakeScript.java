@@ -43,7 +43,7 @@ public class MakeScript {
             + "macro centro_direita; move 1 to -840, 2 to 880, 3 to 850, 4 to 770; end\n"
             + "macro centro_esquerda; move 1 to 840, 2 to -880, 3 to -850, 4 to -770; end\n"
             + "macro pegaIda; up_init; move 7 to -1400; end\n"
-            + "macro pegaVolta; move 7 to -20; up_init; end\n"
+            + "macro pegaVolta; move 7 to 20; up_init; end\n"
             + "macro devolveIda; up_init; end\n"
             + "macro devolveVolta; move 7 to -1400; up_init; end\n";
 

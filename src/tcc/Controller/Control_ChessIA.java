@@ -159,14 +159,22 @@ public class Control_ChessIA implements Runnable {
 
         setStrMoveIA(from + "_" + to + "_" + isCapture);
         
-        //waitToMoveRobix();
-        
+        waitToMoveRobix();
     }
     
     private void waitToMoveRobix(){
         while (true) {            
             if (centerCtrl.getCtrlRobix().isRobixStopped()) {
+//                System.out.println("\n\n>>>>>>>>>>>breakLoop");
                 break;
+            }
+            try {
+                //            else {
+//                System.out.print(".");
+//            }
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Control_ChessIA.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
