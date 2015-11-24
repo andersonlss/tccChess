@@ -8,6 +8,7 @@ package tcc.Controller;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import fr.free.jchecs.core.Move;
 import tcc.imageprocessing.BridgeToDetectMotion;
 
 /**
@@ -28,13 +29,12 @@ public class Control_ImgProc implements Runnable {
      * strMoveFromImgs
      *
      */
-    
-    private final BridgeToDetectMotion bridgeToDetectMotion;
 
+//    private final BridgeToDetectMotion bridgeToDetectMotion;
     /**
      * A variavel que pode possui as strings de movimento, obtidas das imgs
      */
-    private String strMoveFromImgs = "";
+    private Move moveFromImgs = null;
 
     /**
      * Construtor da classe que recebe o Centro de Controle do Projeto
@@ -43,7 +43,7 @@ public class Control_ImgProc implements Runnable {
      */
     public Control_ImgProc(Control_Center centerCtrl) {
         this.centerCtrl = centerCtrl;
-        this.bridgeToDetectMotion = new BridgeToDetectMotion();
+//        this.bridgeToDetectMotion = new BridgeToDetectMotion();
         /**
          * Se quiser pode iniciar sua variavel que obtem as imgs aqui
          */
@@ -69,6 +69,27 @@ public class Control_ImgProc implements Runnable {
     }
 
     /**
+     * Metodo que valida a StrMoveFromImg, se estiver correta, obtemos o
+     * MoveFromImgs.
+     *
+     */
+    private boolean validaStrMove(String strMoveFromImg) {
+
+        if (strMoveFromImg.matches("[a-h][1-8]_[a-h][1-8]")) {
+
+            Move moveFromImgs = centerCtrl.getCtrlChessIA().getMoveFromStringMove(strMoveFromImg);
+
+            if (moveFromImgs != null) {
+                System.out.println("jogada valida");
+                setMoveImg(moveFromImgs);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Metodo Run da Thread que sempre ficará executando em loop.
      */
     @Override
@@ -83,21 +104,45 @@ public class Control_ImgProc implements Runnable {
                  * Estou utilizando o metodo stringsDoTeclado, como forma de
                  * testes.
                  */
-                
+
                 //bridgeToDetectMotion.getDm().getSaida();
-                
-                //String moveFromImg = stringsDoTeclado();
-                System.out.println("esperando movimento");
-                String moveFromImg = bridgeToDetectMotion.getDm().getSaida();
-                System.out.println(moveFromImg);
+                String strMoveFromImg;
+
                 /**
                  * Se a String recebida estiver válida, iremos setar a variavel
-                 * StrMoveImg E liberar a operacao para o Tabuleiro ser
+                 * MoveFromImg E liberar a operacao para o Tabuleiro ser
                  * atualizado.
                  */
-                if (moveFromImg.matches("[a-h][1-8]_[a-h][1-8]")) {
-                    setStrMoveImg(moveFromImg);
-                }
+                /**
+                 * O loop do_while tem como função garantir um Move válido
+                 * para ser enviado ao tabuleiro.
+                 */
+                do {
+//                    System.out.println("esperando movimento");
+
+                    strMoveFromImg = stringsDoTeclado();
+//                    strmoveFromImg = bridgeToDetectMotion.getDm().getSaida();
+
+                    System.out.println("strMoveFromImg = " + strMoveFromImg);
+
+                    if (validaStrMove(strMoveFromImg)) {
+                        break;
+                    } else {
+                        /**
+                         * Nesse else, temos que criar um tipo de alerta ao usuário,
+                         * lhe informando que precisa jogar novamente.
+                         */
+                        System.out.println("StrMove incorreta");
+                    }
+
+                } while (true);
+
+//                setMoveImg(moveFromImg);
+//                if (moveFromImg.matches("[a-h][1-8]_[a-h][1-8]")) {
+//                    setStrMoveImg(moveFromImg);
+//                } else {
+//                    System.out.println("entrada errada");
+//                }
             }
         }
     }
@@ -110,14 +155,10 @@ public class Control_ImgProc implements Runnable {
      *
      * @return String de Movimento XX_XX
      */
-    public synchronized String getStrMoveImg() {
-        String saida = strMoveFromImgs;
-        strMoveFromImgs = "";
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(Control_ImgProc.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    public synchronized Move getMoveImg() {
+        Move saida = moveFromImgs;
+        moveFromImgs = null;
+
         return saida;
     }
 
@@ -126,8 +167,8 @@ public class Control_ImgProc implements Runnable {
      *
      * @param strMove
      */
-    private void setStrMoveImg(String strMove) {
-        this.strMoveFromImgs = strMove;
+    private void setMoveImg(Move moveFromImgs) {
+        this.moveFromImgs = moveFromImgs;
     }
 
     /**
@@ -135,8 +176,8 @@ public class Control_ImgProc implements Runnable {
      *
      * @return True se estiver ou ao contrário
      */
-    public boolean strMoveImgIsEmpty() {
-        if (strMoveFromImgs.equalsIgnoreCase("")) {
+    public boolean moveImgIsEmpty() {
+        if (moveFromImgs == null) {
             return true;
         } else {
             return false;
@@ -155,10 +196,9 @@ public class Control_ImgProc implements Runnable {
         } catch (InterruptedException ex) {
             Logger.getLogger(Control_ImgProc.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         System.out.print("Digite 'exit' para terminar ou o move XX_XX para o movimento.\n>");
         while (true) {
-            if (strMoveImgIsEmpty()) {
+            if (moveImgIsEmpty()) {
                 System.out.print(">");
                 linha = entrada.nextLine();
 

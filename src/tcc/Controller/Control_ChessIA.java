@@ -73,15 +73,20 @@ public class Control_ChessIA implements Runnable {
         Move move;
         while (true) {
 //            System.out.println(".");
-            if (!centerCtrl.getCtrlImgProc().strMoveImgIsEmpty()) {
-                moveStr = centerCtrl.getCtrlImgProc().getStrMoveImg();
-                System.out.println("moveStr=" + moveStr);
-                move = getMoveFromStringMove(moveStr);
-                if (move != null) {
-                    break;
-                } else {
-                    System.out.println("Esperando Jogada Válida");
-                }
+            if (!centerCtrl.getCtrlImgProc().moveImgIsEmpty()) {
+                
+                move = centerCtrl.getCtrlImgProc().getMoveImg();
+                
+                break;
+                
+//                System.out.println("moveStr=" + moveStr);
+//                move = getMoveFromStringMove(moveStr);
+//                if (move != null) {
+//                    System.out.println("ok ctrlChessIA");
+//                    break;
+//                } else {
+//                    System.out.println("Esperando Jogada Válida");
+//                }
             }
             try {
                 Thread.sleep(200);
@@ -95,11 +100,11 @@ public class Control_ChessIA implements Runnable {
     }
 
     /**
-     * Interpreta a StringJogada da camera
+     * Interpreta a StringJogada da camera e obtem o Move se a mesma estiver correta
      *
      * @param move String de movimento da Camera
      */
-    private Move getMoveFromStringMove(String move) {
+    public Move getMoveFromStringMove(String move) {
 
         final MoveGenerator moveGen = brgJChess.getBoardFromGame();
 
