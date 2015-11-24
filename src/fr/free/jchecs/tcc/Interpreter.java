@@ -56,8 +56,8 @@ public class Interpreter {
                         prise = mbBoard.getPieces()[dst.getIndex() + FILE_COUNT];
                     }
                 }
-                mv = new Move(p, orig, dst, prise);
                 if (squareDst == dst) {
+                    mv = new Move(p, orig, dst, prise);
                     System.out.println(mv.toString());
                     break;
                 }
