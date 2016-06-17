@@ -15,7 +15,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import tcc.Controller.Control_ImgProc;
 
 import tcc.imageprocessing.elementos.ElementoEstruturante;
 import tcc.imageprocessing.elementos.Imagem;
@@ -32,7 +31,7 @@ public class DetectMotion {
 
     private BufferedImage imageInicial;
     private BufferedImage imageFinal;
-    
+
     public DetectMotion() {
         webcam = Webcam.getDefault();
         webcam.setViewSize(WebcamResolution.VGA.getSize());
@@ -40,19 +39,6 @@ public class DetectMotion {
 
     }
 
-    // ************************************************************************
-    //feito esses codigos para testes
-    private Control_ImgProc ctrlImg;
-    
-    public DetectMotion(Control_ImgProc ctrlImg) {
-        webcam = Webcam.getDefault();
-        webcam.setViewSize(WebcamResolution.VGA.getSize());
-        webcam.open(true);
-        
-        this.ctrlImg = ctrlImg;
-    }
-    // ************************************************************************
-    
     public String getSaida() {
         detector = new WebcamMotionDetector(webcam);
         detector.setInterval(2000); // one check per 500 ms
@@ -60,47 +46,38 @@ public class DetectMotion {
         detector.start();
         imageInicial = webcam.getImage();
 
-        System.out.println("Jogue");
-        ctrlImg.setAutoriza();
-        
-        
         String saida = null;
 
         boolean motion = false;
-        int cont = 0;
+
         while (true) {
-            if (detector.isMotion() || cont == 5) {
+            if (detector.isMotion()) {
                 if (!motion) {
                     motion = true;
-                    cont = 0;
                 }
             } else {
                 if (motion) {
                     motion = false;
-                    
+                    System.out.println("getImage()");
                     imageFinal = webcam.getImage();
                     saida = processar(imageInicial, imageFinal);
-                    System.out.println("\n\tSnap Obtido: "+ saida );
-                    if (saida.matches("[a-h][1-8]_[a-h][1-8]") && ctrlImg.esperaRobix()) {
-                        System.out.println("\n\tMovimento Snap: "+ saida);
+                    System.out.println("saidaAtual=" + saida);
+                    if (saida.matches("[a-h][1-8]_[a-h][1-8]")) {
                         imageInicial = imageFinal;
                         break;
-                    } else {
-                        System.out.print(">");
                     }
                 }
             }
             try {
-                Thread.sleep(1000); // must be smaller than interval
+                Thread.sleep(50); // must be smaller than interval
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            cont++;
         }
 
-        //System.out.println("");
+        System.out.println("");
         detector.stop();
-        //System.out.println("");
+        System.out.println("");
 
         return saida;
     }
@@ -113,7 +90,7 @@ public class DetectMotion {
         //IMAGEM PROCESSA: EROSÃO
         Imagem imagem = OperacaoMorfologica.erodir(
                 OperacaoMorfologica.subtracao(new Imagem(imageInicial), new Imagem(imageFinal)), ee);
-
+        
         BufferedImage image3 = new BufferedImage(imageInicial.getWidth(), imageInicial.getHeight(), 1);
 
         //LIMIARIZAÇÃO
@@ -152,9 +129,9 @@ public class DetectMotion {
                 }
             }
         }
-
-        if (casa.size() > 2) {
-//            System.out.println("ERROR");
+        
+        if(casa.size() > 2){
+            System.out.println("");
         }
 
         //FORMATA SAÍDA
