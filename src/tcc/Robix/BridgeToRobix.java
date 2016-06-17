@@ -22,7 +22,7 @@ public class BridgeToRobix {
 
     public BridgeToRobix() {
         tab_mov = new Tab_Mov();
-        //connect = new Connect();
+        connect = new Connect();
     }
     
     private void waitForPodCmdFinished(Pod pod, int seqNum) {

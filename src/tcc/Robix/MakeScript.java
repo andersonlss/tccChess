@@ -39,17 +39,18 @@ public class MakeScript {
      Macros Fixos para os Movimentos
      */
     private String macroBasico
-            = "macro up_init; move 5 to -800; move all to initpos; end\n"
+            = "macro repouso; move 1 to 1400, 2 to 350, 3 to -930, 4 to -650, 5 to -800; end\n"
+            + "macro up_init; move 5 to -800; move 1 to 0, 2 to 0, 3 to 0, 4 to 0, 6 to 0; end\n"
             + "macro centro_direita; move 1 to -840, 2 to 880, 3 to 850, 4 to 770; end\n"
             + "macro centro_esquerda; move 1 to 840, 2 to -880, 3 to -850, 4 to -770; end\n"
             + "macro pegaIda; up_init; move 7 to -1400; end\n"
             + "macro pegaVolta; move 7 to 20; up_init; end\n"
             + "macro devolveIda; up_init; end\n"
-            + "macro devolveVolta; move 7 to -1400; up_init; end\n";
+            + "macro devolveVolta; move 7 to -1400; up_init; repouso; end\n";
 
     private String macroCaptura
             = "macro lixao; "
-            + "move 1 to 830, 2 to 120, 3 to -50, 4 to -220; move 5 to 120, 6 to -1280; end\n"
+            + "move 1 to 830, 2 to 120, 3 to -50, 4 to -220; move 5 to -200, 6 to -1280; end\n"
             + "macro temp; "
             + "move 1 to 1500, 2 to 790, 3 to -730, 4 to -1500; move 5 to 670, 6 to 0; end\n";
 
