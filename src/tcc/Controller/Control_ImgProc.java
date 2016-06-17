@@ -30,7 +30,7 @@ public class Control_ImgProc implements Runnable {
      *
      */
 
-    private final BridgeToDetectMotion bridgeToDetectMotion;
+//    private final BridgeToDetectMotion bridgeToDetectMotion;
     /**
      * A variavel que pode possui as strings de movimento, obtidas das imgs
      */
@@ -43,7 +43,7 @@ public class Control_ImgProc implements Runnable {
      */
     public Control_ImgProc(Control_Center centerCtrl) {
         this.centerCtrl = centerCtrl;
-        this.bridgeToDetectMotion = new BridgeToDetectMotion(this);
+//        this.bridgeToDetectMotion = new BridgeToDetectMotion();
         /**
          * Se quiser pode iniciar sua variavel que obtem as imgs aqui
          */
@@ -57,8 +57,7 @@ public class Control_ImgProc implements Runnable {
      */
     public boolean takePictures() {
         while (true) {
-            if ( !centerCtrl.getCtrlChessIA().strMoveIAIsEmpty() ) {
-            //if (centerCtrl.getCtrlRobix().isRobixStopped()) {
+            if (centerCtrl.getCtrlRobix().isRobixStopped()) {
                 return true;
             }
             try {
@@ -121,8 +120,8 @@ public class Control_ImgProc implements Runnable {
                 do {
 //                    System.out.println("esperando movimento");
 
-                    //strMoveFromImg = stringsDoTeclado();
-                    strMoveFromImg = bridgeToDetectMotion.getDm().getSaida();
+                    strMoveFromImg = stringsDoTeclado();
+//                    strmoveFromImg = bridgeToDetectMotion.getDm().getSaida();
 
                     System.out.println("strMoveFromImg = " + strMoveFromImg);
 
@@ -213,36 +212,5 @@ public class Control_ImgProc implements Runnable {
             }
         }
         return "saida";
-    }
-    
-    // Codigos feitos para testes
-    private boolean autorizado = false;
-    
-    public void setAutoriza(){
-        autorizado = true;        
-    }
-    
-    public boolean esperaRobix(){
-        
-        return centerCtrl.getCtrlRobix().isRobixStopped();
-        //while (true) {
-//            if () {
-//                return true;
-//            }
-//            try {
-//                Thread.sleep(200);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(Control_ChessIA.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-    }
-    
-    public boolean autorizaRobix(){
-        if (autorizado) {
-            autorizado = false;
-            return true;
-        } else {
-            return false;
-        }
     }
 }
