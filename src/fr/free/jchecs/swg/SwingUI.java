@@ -999,7 +999,11 @@ final class SwingUI implements MoveListener, UI {
                 } else {
                     _boardUI.setEnabled(false);
 //                    _lastMove = ia.getMoveFor(plateau);
-                    _lastMove = getMoveFromAI(ia, plateau);
+                    //_lastMove = getMoveFromAI(ia, plateau);
+                    
+                    //essas duas linhas abaixo são para simular jogadas
+                    getMoveFromAI(ia, plateau);
+                    _lastMove = waitForMoveFromControl();
                 }
 
                 if (_activeSample != null) {

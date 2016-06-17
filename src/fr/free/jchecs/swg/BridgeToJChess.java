@@ -52,7 +52,6 @@ public final class BridgeToJChess {
         ihm.setCenterCtrl(centerCtrl);
         gestionErreur.setUI(ihm);
         ihm.start();
-        System.out.println("ola");
     }
 
     public void stop() {
