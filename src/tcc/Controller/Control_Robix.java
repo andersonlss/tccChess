@@ -31,7 +31,7 @@ public class Control_Robix implements Runnable {
 //        updateRobixStopped();
 //        return resp;
         if (robixStopped) {
-            updateRobixStopped();
+//            updateRobixStopped();
             resp = true;
         } else {
             resp = false;
@@ -55,7 +55,8 @@ public class Control_Robix implements Runnable {
     public MoveRobix coletaMove() {
         MoveRobix move;
         while (true) {
-            if (!centerCtrl.getCtrlChessIA().strMoveIAIsEmpty()) {
+            if (centerCtrl.getCtrlImgProc().autorizaRobix()) {
+            //if (!centerCtrl.getCtrlChessIA().strMoveIAIsEmpty()) {
                 String moveStr = centerCtrl.getCtrlChessIA().getStrMoveIA();
                 move = getMoveFromStringMove(moveStr);
                 if (move != null) {
@@ -80,9 +81,12 @@ public class Control_Robix implements Runnable {
         while (true) {
             MoveRobix move = coletaMove();
             if (move != null) {
-                //brgRobix.efetuaJogada(move);
-                System.out.println("Robix jogou: " + move.toString());
-                updateRobixStopped();
+                robixStopped = false;
+                brgRobix.efetuaJogada(move);
+                robixStopped = true;
+                System.out.println("Robix jogou: " + move.toString() + " stopped:" + robixStopped);
+                
+//updateRobixStopped();
                 System.out.println("");
             }
         }

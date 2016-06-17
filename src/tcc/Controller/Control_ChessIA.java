@@ -95,7 +95,7 @@ public class Control_ChessIA implements Runnable {
             }
         }
 
-        System.out.println("MOVE: " + moveStr);
+        System.out.println("\tMOVEFromCamera: " + moveStr);
         return move;
     }
 

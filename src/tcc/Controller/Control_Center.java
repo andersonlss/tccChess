@@ -27,10 +27,10 @@ public class Control_Center {
     public void starts() {
         try {
             new Thread(ctrlImgProc, "ctrlImgProc").start();
-            Thread.sleep(200);
+            Thread.sleep(400);
 
             new Thread(ctrlRobix, "ctrlRobix").start();
-            Thread.sleep(200);
+            Thread.sleep(400);
             
             new Thread(ctrlChessIA, "ctrlChessIA").start();
         
