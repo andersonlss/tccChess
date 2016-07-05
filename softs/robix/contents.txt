@@ -1,0 +1,47 @@
+/bin                        Executable Files
+   UsborNexus.exe           - Nexus launcher
+   UsborNexus.config        - Nexus launcher settings
+   UsborNexway.exe          - Nexway launcher
+   UsborNexway.config       - Nexway launcher settings
+
+   nexus.bat                - batch file for launching Nexus with "java.exe"
+                              (for troubleshooting and illustrative purposes)
+   nexway.bat               - batch file for launching Nexway with "java.exe"
+                              (for troubleshooting and illustrative purposes)
+
+   MSVCR71.dll              - Microsoft runtime library, needed here possibly
+                              because of MS's poor system planning.
+
+/devBin                     Device Binaries
+   firmware-Xxx.rbxUsborBin - firmware (can be installed with Nexus application)
+   cfgldr-Xxx.rbxUsborBin   - config loader (needed to update Usbor Configurations)
+
+/driver                     Device Driver Files
+   rbxUsborDrv.sys          - Usbor device driver
+   rbxUsborDrv.inf          - Usbor driver information file
+
+/doc                        Documentation
+   /API/Java                - docs for the Java Nexway API
+   /API/NexwayLib           - docs for the C/C++/VB NexwayLib API
+
+/examples                   Nexway API Programming Examples
+   /cpp                     - C/C++ examples
+   /java                    - Java examples
+   /vb                      - Visual Basic .NET examples
+
+/include
+   rbxNexwayLib.h           - C/C++ header file for programming with the
+                              Nexway API
+   rbxNexwayLib.vb          - Visual Basic .NET module for programming with
+                              the Nexway API
+
+/lib                        Library Files
+   rbxUsbor.jar             - Java classes
+   rbxUsborJni.dll          - driver<-->Java glue for Usbor and Cameras
+   rbxNexwayLib.dll         - wrapper library which allows access to Nexway
+                              Java classes from C/C++ and Visual Basic
+
+readme.txt                  - release info and driver installation instructions
+
+contents.txt                - this file
+

@@ -30,7 +30,7 @@ public class Control_Center {
             Thread.sleep(200);
 
             new Thread(ctrlRobix, "ctrlRobix").start();
-            Thread.sleep(200);
+            Thread.sleep(500);
             
             new Thread(ctrlChessIA, "ctrlChessIA").start();
         

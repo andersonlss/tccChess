@@ -1049,7 +1049,8 @@ final class SwingUI implements MoveListener, UI {
     public void stop() {
         saveProperties();
         isClosed = true;
-        System.exit(0);
+        centerCtrl.getCtrlRobix().destroy();
+        //System.exit(0);
     }
 
     /**
@@ -1129,7 +1130,7 @@ final class SwingUI implements MoveListener, UI {
     
     private Move getMoveFromAI(Engine ai, MoveGenerator moveGen) {
         Move moveAI = ai.getMoveFor(moveGen);
-        sendMoveStringToRobix(moveAI);
+        sendMoveStringToRobix(moveAI);     
         return moveAI;
     }
     

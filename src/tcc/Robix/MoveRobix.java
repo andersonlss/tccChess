@@ -49,7 +49,6 @@ public class MoveRobix {
 
     @Override
     public String toString() {
-        return "Move:" + "ori=" + origem + ", dest=" + destino + ", captura=" + isCapture + '}';
+        return "Move:" + origem + "_" + destino + " , captura=" + isCapture;
     }
-    
 }

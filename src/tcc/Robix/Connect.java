@@ -33,8 +33,10 @@ public class Connect {
 
     private void executaCMD() {
 
+//        String comando
+//                = "cmd /c start C:/\"Program Files (x86)\"/Robix/\"Robix Robot Systems\"/bin/UsborNexus.exe";
         String comando
-                = "cmd /c start C:/\"Program Files (x86)\"/Robix/\"Robix Robot Systems\"/bin/UsborNexus.exe";
+                = "cmd /c start softs/robix/bin/UsborNexus.exe";
 
         try {
             //usbNexus = Runtime.getRuntime().exec(comando);

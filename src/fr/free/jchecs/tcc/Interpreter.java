@@ -58,7 +58,7 @@ public class Interpreter {
                 }
                 if (squareDst == dst) {
                     mv = new Move(p, orig, dst, prise);
-                    System.out.println(mv.toString());
+                    //System.out.println(mv.toString());
                     break;
                 }
             }

@@ -8,6 +8,7 @@ package tcc.imageprocessing;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tcc.Controller.Control_ImgProc;
 
 /**
  *
@@ -21,6 +22,10 @@ public class BridgeToDetectMotion  {
         this.dm = new DetectMotion();
     }
 
+     public BridgeToDetectMotion(Control_ImgProc ctrlImg) {
+        this.dm = new DetectMotion(ctrlImg);
+    }
+    
     public DetectMotion getDm() {
         return dm;
     }

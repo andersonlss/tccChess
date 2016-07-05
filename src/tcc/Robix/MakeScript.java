@@ -46,7 +46,7 @@ public class MakeScript {
             + "macro pegaIda; up_init; move 7 to -1400; end\n"
             + "macro pegaVolta; move 7 to 20; up_init; end\n"
             + "macro devolveIda; up_init; end\n"
-            + "macro devolveVolta; move 7 to -1400; up_init; repouso; end\n";
+            + "macro devolveVolta; move 7 to -1400; up_init; end\n";
 
     private String macroCaptura
             = "macro lixao; "
@@ -82,6 +82,8 @@ public class MakeScript {
             script += MovSimples[0]
                     + MovSimples[1];
         }
+        
+        script += "repouso;\n";
 
         return script;
     }

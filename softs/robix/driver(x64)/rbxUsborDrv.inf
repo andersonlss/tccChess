@@ -1,0 +1,121 @@
+;
+; Robix(tm) Usbor Robotic Servo Controller
+;    Device Driver INF for Windows XP/7/8
+;
+
+[Version]
+Signature="$Windows NT$"
+Class=Robix
+ClassGuid={05A4F9EC-1924-4bb5-B024-54685C1A7FE4}
+Provider=%MSFTUMDF%
+DriverVer=12/06/2013,10.44.17.803
+CatalogFile=wudf.cat
+
+[Manufacturer]
+%MSFTUMDF%=Robix,NTamd64
+
+[Robix.NTamd64]
+%RbxUsbDeviceName%=RbxUsb_Install, USB\VID_FFFF&PID_C2DC
+
+
+[ClassInstall32]
+AddReg=RbxClass_RegistryAdd
+
+[RbxClass_RegistryAdd]
+HKR,,,,%ClassName%
+HKR,,Icon,,"-10"
+
+[SourceDisksFiles]
+rbxUsborDrv.dll=1
+WudfUpdate_01011.dll=1
+WdfCoInstaller01011.dll=1
+WinUsbCoinstaller2.dll=1
+
+[SourceDisksNames]
+1 = %MediaDescription%
+
+; =================== UMDF RbxUsb Device ==================================
+
+[RbxUsb_Install.NT]
+CopyFiles=UMDriverCopy
+Include=WINUSB.INF                      ; Import sections from WINUSB.INF
+Needs=WINUSB.NT                         ; Run the CopyFiles & AddReg directives for WinUsb.INF
+
+
+[RbxUsb_Install.NT.hw]
+AddReg=RbxUsb_Device_AddReg
+
+[RbxUsb_Install.NT.Services]
+AddService=WUDFRd,0x000001fa,WUDFRD_ServiceInstall  ; flag 0x2 sets this as the service for the device
+AddService=WinUsb,0x000001f8,WinUsb_ServiceInstall  ; this service is installed because its a filter.
+
+[RbxUsb_Install.NT.Wdf]
+KmdfService=WINUSB, WinUsb_Install
+UmdfDispatcher=WinUsb
+UmdfService=rbxUsborDrv, rbxUsborDrv_Install
+UmdfServiceOrder=rbxUsborDrv
+
+; Enable impersonation for the PLAY_FILE IOCTL
+UmdfImpersonationLevel=Impersonation
+
+[RbxUsb_Install.NT.CoInstallers]
+AddReg=CoInstallers_AddReg
+CopyFiles=CoInstallers_CopyFiles
+
+[WinUsb_Install]
+KmdfLibraryVersion = 1.11
+
+[rbxUsborDrv_Install]
+UmdfLibraryVersion=1.11.0
+DriverCLSID = "{4AF1B3FD-827A-4A95-83FD-312B0441C2E4}"
+ServiceBinary = %12%\UMDF\rbxUsborDrv.dll
+
+[RbxUsb_Device_AddReg]
+HKR,,"LowerFilters",0x00010008,"WinUsb" ; FLG_ADDREG_TYPE_MULTI_SZ | FLG_ADDREG_APPEND
+HKR,,"WinUsbPowerPolicyOwnershipDisabled",0x00010001,1  ; our driver takes ownership of power policy.  Tell WINUSB not to
+
+; When the UMDF Idle/Wake APIs are called with WdfDefault setting
+; These keys tell UMDF to enable idle and wake by default
+HKR,WudfPowerPolicySettings,"WdfDefaultIdleInWorkingState",0x00010001,1
+HKR,WudfPowerPolicySettings,"WdfDefaultWakeFromSleepState",0x00010001,1
+
+[WUDFRD_ServiceInstall]
+DisplayName = %WudfRdDisplayName%
+ServiceType = 1
+StartType = 3
+ErrorControl = 1
+ServiceBinary = %12%\WUDFRd.sys
+LoadOrderGroup = Base
+
+
+[WinUsb_ServiceInstall]
+DisplayName     = %WinUsb_SvcDesc%
+ServiceType     = 1
+StartType       = 3
+ErrorControl    = 1
+ServiceBinary   = %12%\WinUSB.sys
+
+[CoInstallers_AddReg]
+HKR,,CoInstallers32,0x00010000,"WudfUpdate_01011.dll", "WinUsbCoinstaller2.dll", "WdfCoInstaller01011.dll,WdfCoInstaller"
+
+[CoInstallers_CopyFiles]
+WudfUpdate_01011.dll
+WdfCoInstaller01011.dll
+WinUsbCoinstaller2.dll
+
+[DestinationDirs]
+UMDriverCopy=12,UMDF ; copy to driversMdf
+CoInstallers_CopyFiles=11
+
+[UMDriverCopy]
+rbxUsborDrv.dll
+
+; =================== Generic ==================================
+
+[Strings]
+MSFTUMDF="Robix Internal (WDF:UMDF)"
+MediaDescription="Robix(tm) Usbor Device Driver Installation Disk"
+ClassName="Robix Device"
+WudfRdDisplayName="Windows Driver Foundation - User-mode Driver Framework Reflector"
+RbxUsbDeviceName="Usbor-32i Robotic Servo Controller" 
+WinUsb_SvcDesc="WinUSB Driver"

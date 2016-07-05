@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+  <!--JBuilder Library Definition File-->
+  <fullname>RobixUsbor</fullname>
+  <class>
+    <path>[../../../../lib/rbxUsbor.jar]</path>
+  </class>
+  <lastmodsaved>1095202446692</lastmodsaved>
+</library>

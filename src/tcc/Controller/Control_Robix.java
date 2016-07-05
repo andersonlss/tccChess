@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import tcc.Robix.MoveRobix;
 import tcc.Robix.BridgeToRobix;
+import tcc.imageprocessing.ImgJogada;
 
 /**
  *
@@ -20,11 +21,31 @@ public class Control_Robix implements Runnable {
     private BridgeToRobix brgRobix;
 
     private boolean robixStopped = true;
+    
+//    ImgJogada imgJogada = new ImgJogada();
 
     public Control_Robix(Control_Center centerCtrl) {
         this.centerCtrl = centerCtrl;
         this.brgRobix = new BridgeToRobix();
+//        imgJogada.setImgInicial();
     }
+
+    // para testes
+    
+//    boolean procImg = false;
+//
+//    public ImgJogada isProcImg() {
+//        if (procImg) {
+//            procImg = false;
+//
+//            ImgJogada resp = new ImgJogada(imgJogada);
+//            imgJogada.atuazilaInicial();
+//
+//            return resp;
+//        } else {
+//            return null;
+//        }
+//    }
 
     public boolean isRobixStopped() {
         boolean resp;
@@ -41,6 +62,7 @@ public class Control_Robix implements Runnable {
 
     private void updateRobixStopped() {
         robixStopped = !robixStopped;
+        System.out.println("robixStopped="+robixStopped);
     }
 
     private MoveRobix getMoveFromStringMove(String moveIA) {
@@ -74,16 +96,22 @@ public class Control_Robix implements Runnable {
 
         return move;
     }
+    
+    public void destroy(){
+        brgRobix.destroy();
+    }
 
     @Override
     public void run() {
         while (true) {
             MoveRobix move = coletaMove();
             if (move != null) {
-                //brgRobix.efetuaJogada(move);
-                System.out.println("Robix jogou: " + move.toString());
+
+                brgRobix.efetuaJogada(move);
+//                imgJogada.setImgFinal();
+//                procImg = true;
+                System.out.println("\tRobix jogou: " + move.toString());
                 updateRobixStopped();
-                System.out.println("");
             }
         }
     }

@@ -19,6 +19,7 @@ public class BridgeToRobix {
     
     private Tab_Mov tab_mov;
     private Connect connect;
+    private int jogadas = 0;
 
     public BridgeToRobix() {
         tab_mov = new Tab_Mov();
@@ -47,13 +48,20 @@ public class BridgeToRobix {
     private void runQuickScript(Pod pod, MoveRobix jogada) {
 
         String script = tab_mov.getScript(jogada);
-
+        
+        if (jogada.isIsCapture()) {
+            jogadas = jogadas + 3;
+        } else {
+            jogadas++;
+        }
+        System.out.println("QtdJogadas>>"+jogadas);
+        
         if (script == null) {
             System.out.println(">null");
             return;
         }
 
-        System.out.println("\t\t>>> Running quick script for move: "+jogada.getJogada());
+        //System.out.println(">>> Running quick script for move: "+jogada.getJogada());
         //System.out.println("Script= " + jogada.getJogada() + ":=>\n" + script);
 
         // Start quick script running
