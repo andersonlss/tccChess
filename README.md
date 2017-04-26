@@ -4,7 +4,8 @@
   Faço como um loop de conversas entre os controllers.
   Como na Figura abaixo:
   
-    ![Logica Controllers](https://raw.githubusercontent.com/andersonlss/tccChess/master/logica.png)
+![logica](https://cloud.githubusercontent.com/assets/15630383/25412749/78d2347c-29fb-11e7-9ec5-5b814eb73990.png)
+
     
   Seguindo as condições:
       
